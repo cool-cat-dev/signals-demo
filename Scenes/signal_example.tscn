@@ -1,0 +1,111 @@
+[gd_scene load_steps=15 format=3 uid="uid://dmudoeqe85y8k"]
+
+[ext_resource type="Script" path="res://Scripts/signal_example.gd" id="1_jhtkk"]
+[ext_resource type="Script" path="res://Scripts/Label.gd" id="2_r3gfs"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="3_iawbf"]
+[ext_resource type="Texture2D" uid="uid://boyru7evd2hrg" path="res://icon.svg" id="4_jux5g"]
+[ext_resource type="Script" path="res://Scripts/ScoreArea.gd" id="5_ya2qr"]
+
+[sub_resource type="Gradient" id="Gradient_j0vi3"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.851346, 0.751998, 0.708715, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s0f3s"]
+gradient = SubResource("Gradient_j0vi3")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7huti"]
+size = Vector2(125, 123)
+
+[sub_resource type="Gradient" id="Gradient_bltlw"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0, 0.639216, 0.980392, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_scrhq"]
+gradient = SubResource("Gradient_bltlw")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jug2m"]
+size = Vector2(1151, 161)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7oo4"]
+size = Vector2(138, 291)
+
+[sub_resource type="Gradient" id="Gradient_x01tn"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0, 0.223529, 0.227451, 0.501961)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_50hey"]
+gradient = SubResource("Gradient_x01tn")
+
+[node name="SignalExample" type="Node2D"]
+script = ExtResource("1_jhtkk")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+position = Vector2(575.5, 323)
+scale = Vector2(17.9531, 10.125)
+texture = SubResource("GradientTexture2D_s0f3s")
+
+[node name="Score" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="Score"]
+offset_left = 545.0
+offset_top = 34.0
+offset_right = 585.0
+offset_bottom = 57.0
+theme_override_font_sizes/font_size = 100
+text = "0"
+script = ExtResource("2_r3gfs")
+
+[node name="Button" type="Button" parent="Score"]
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 170.0
+offset_bottom = 61.0
+text = "Return to Title"
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(585, 307)
+script = ExtResource("3_iawbf")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("4_jux5g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_7huti")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground"]
+position = Vector2(576, 569.5)
+scale = Vector2(17.9688, 2.45313)
+texture = SubResource("GradientTexture2D_scrhq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(575.5, 569.5)
+shape = SubResource("RectangleShape2D_jug2m")
+
+[node name="ScoreArea" type="Area2D" parent="."]
+position = Vector2(798, 302)
+script = ExtResource("5_ya2qr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreArea"]
+position = Vector2(9, 37.5)
+shape = SubResource("RectangleShape2D_w7oo4")
+
+[node name="Sprite2D" type="Sprite2D" parent="ScoreArea"]
+position = Vector2(9.5, 30.5)
+scale = Vector2(0.574219, 285)
+texture = SubResource("GradientTexture1D_50hey")
+
+[node name="Label" type="Label" parent="ScoreArea"]
+offset_left = -66.0
+offset_top = -156.0
+offset_right = 79.0
+offset_bottom = -133.0
+text = "Step here to score."
+
+[connection signal="pressed" from="Score/Button" to="." method="_on_button_pressed"]
+[connection signal="body_entered" from="ScoreArea" to="ScoreArea" method="_on_body_entered"]
